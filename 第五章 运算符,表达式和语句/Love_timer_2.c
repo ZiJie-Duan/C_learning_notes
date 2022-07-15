@@ -17,14 +17,14 @@ int main(void){
 
     short days_total=0;
 
-    printf("LOVE Timer... \nPlease input date now.\n");
+    printf("LOVE Timer... \nPlease input the date of today.\n");
     printf("year month day ex:[2022 7 13] >>");
     scanf("%hd",&now_year);
     scanf("%hd",&now_month);
     scanf("%hd",&now_day);
 
     days_total = date_to_day(aim_year,aim_month,aim_day,now_year,now_month,now_day);
-    printf("\n\n Now Peter and Dianna Fall in love for %d days", days_total);
+    printf("\n\n I have been with Dianna for %d days", days_total);
     getchar();
     getchar();
 }
