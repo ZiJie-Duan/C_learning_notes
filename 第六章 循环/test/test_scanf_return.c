@@ -4,8 +4,8 @@ int main(void){
     char number;
     int status;
 
-    printf("please input a str>>");
-    status = scanf("%c",&number);
+    printf("please input a lf>>");
+    status = scanf("%lf",&number);
     printf("status: %d",status);
     getchar();
     getchar();
