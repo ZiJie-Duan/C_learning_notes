@@ -19,7 +19,7 @@ def path_creator(code_path):
     exe_path = "\\".join(path_assembly)
     return exe_path
 
-def main():
+def main():  
     code_path = get_parameter()
     exe_path = path_creator(code_path)
     cmd = r"""gcc -o "{}" "{}" """.format(exe_path,code_path)
@@ -29,7 +29,13 @@ def main():
     print("exe path: {}".format(exe_path))
     print("\nCMD: " + cmd)
 
-    os.system(cmd)
+    while True:
+        print("\nStart compiling...")
+        if not os.system(cmd):
+            break
+        print("Compiling errow!")
+        input("Press enter to recompiling...")
+
     print("\nFINISH")
     input("[press enter to quit...]")
 
