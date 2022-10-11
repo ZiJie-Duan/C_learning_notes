@@ -57,6 +57,12 @@ class CompileAssistant:
 
     def kill_program(self):
         cmd = r"""taskkill /F /IM "{}" """.\
+            format(self.exe_name)
+        os.system(cmd)
+        print("task killed")
+
+    def kill_cmd(self): # this function haven't start using
+        cmd = r"""taskkill /F /IM "{}" """.\
             format("cmd.exe")
         os.system(cmd)
         print("task killed")
@@ -66,11 +72,14 @@ class CompileAssistant:
         print("file removed")
     
     def run_exe(self):
-        #cmd = """{}/{}""".format(self.exe_path,self.exe_name)
         print("""EXE File "{}" Is Running""".\
             format(self.exe_name),f_sp=1,b_sp=1)
-        cmd = """start cmd /k "{}" """.format(self.exe_path)
-        os.system(cmd) #此处需要一个 在新的窗口打开运行cmd的函数
+        cmd = "{}".format(self.exe_path)
+        #cmd = """start cmd /k "{}" """.format(self.exe_path)
+        #os.system(cmd) #此处需要一个 在新的窗口打开运行cmd的函数
+        os.startfile(cmd) # this start is really important
+        input("[Press Enter to continue...]")
+        self.kill_program()
     
     def open_cmd(self):
         os.system("start cmd")
@@ -83,9 +92,9 @@ def cmd_core(cmd,ca):
     if cmd == "h":
         print_mode_mute()
         print("C to EXE help",f_sp=2,sp=3)
-        print("[None] ---- compile C file to exe and run it",f_sp=1,sp=3)
+        print("[None] ---- run exe file",f_sp=1,sp=3)
         print("[path] ---- change C code",sp=3)
-        print("b --------- compile C file to exe",sp=3)
+        print("\ --------- compile C file to exe",sp=3)
         print("k --------- kill the exe program",sp=3)
         print("r --------- remove the exe file",sp=3)
         print("c --------- open cmd",sp=3)
@@ -94,21 +103,20 @@ def cmd_core(cmd,ca):
 
     elif len(cmd) > 1:
         ca.init_change_code(cmd)
+    
+    elif cmd == "\\":
+        ca.compile_to_exe()
 
     elif cmd == "k":
         ca.kill_program()
     
     elif cmd == "r":
         ca.remove_program()
-    
-    elif cmd == "b":
-        ca.compile_to_exe()
 
     elif cmd == "c":
         ca.open_cmd()
 
     else:
-        ca.compile_to_exe()
         ca.run_exe()
 
 @MessageBox(mp,mode="normal") 
