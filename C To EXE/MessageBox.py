@@ -71,7 +71,7 @@ class MessagePrinter:
         self,
         f_sp = 0, #front_space #step0
         b_sp = 0, #back_space #step-2
-        sp = 0, #the space in front of the text in a line #step-1
+        sp = 0, #this space in front of the text in a line #step-1
         line_break = True, #\n #step3
         centered = False, #centered print #step2
         clean = False, #print a new message after clean the screen #step1
