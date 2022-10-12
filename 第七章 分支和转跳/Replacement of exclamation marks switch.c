@@ -10,16 +10,24 @@ int main(void){
     while(1){
         scanf("%c",&schar);
 
-        if (schar == '#'){
-            break;
-        } else if (schar == '.'){
+        if (schar == '#') break;
+
+        switch (schar)
+        {
+        
+        case '.':
             printf("!");
             tanhao += 1;
-        } else if (schar == '!'){
+            break;
+        
+        case '!':
             printf("!!");
             double_tanhao += 1;
-        } else {
+            break;
+        
+        default:
             printf("%c",schar);
+            break;
         }
     }
     printf("!=%d !!=%d",tanhao,double_tanhao);
