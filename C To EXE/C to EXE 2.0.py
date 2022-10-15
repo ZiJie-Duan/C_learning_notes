@@ -84,6 +84,11 @@ class CompileAssistant:
     def open_cmd(self):
         os.system("start cmd")
         print("open CMD")
+    
+    def open_path(self):
+        code_path = self.code_path[:(-1*len(self.code_name))]
+        os.system('explorer "{}"'.format(code_path))
+        print("open code path")
 
 
 @MessageBox(mp,mode="normal")
@@ -98,13 +103,14 @@ def cmd_core(cmd,ca):
         print("k --------- kill the exe program",sp=3)
         print("r --------- remove the exe file",sp=3)
         print("c --------- open cmd",sp=3)
+        print("p --------- open code path",sp=3)
         print("q --------- quit",b_sp=2,sp=3)
         print_mode_init()
 
     elif len(cmd) > 1:
         ca.init_change_code(cmd)
     
-    elif cmd == "\\":
+    elif cmd == "\\" or cmd == "、":
         ca.compile_to_exe()
 
     elif cmd == "k":
@@ -115,6 +121,9 @@ def cmd_core(cmd,ca):
 
     elif cmd == "c":
         ca.open_cmd()
+
+    elif cmd == "p":
+        ca.open_path()
 
     else:
         ca.run_exe()
