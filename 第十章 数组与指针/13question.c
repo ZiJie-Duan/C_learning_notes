@@ -5,7 +5,7 @@
 void get_user_input(int group, int lenght, double arr[group][lenght]);
 void print_double_2_arr(int group, int lenght, double arr[group][lenght]);
 void calculate_data_average(int group, int lenght, double arr[group][lenght]);
-
+void calculate_all_data_average(int group, int lenght, double arr[group][lenght]);
 
 int main(void){
 
@@ -13,9 +13,23 @@ int main(void){
     get_user_input(DATA_GROUP,DATA_LENGHT,data);
     print_double_2_arr(DATA_GROUP,DATA_LENGHT,data);
     calculate_data_average(DATA_GROUP,DATA_LENGHT,data);
+    calculate_all_data_average(DATA_GROUP,DATA_LENGHT,data);
     getchar();
     getchar();
 }
+
+void calculate_all_data_average(int group, int lenght, double arr[group][lenght]){
+    double total = 0;
+    int cont = 0;
+    for (int i=0; i<group; i++){
+        for (int ii=0; ii<group; ii++){
+            total += (double)arr[i][ii];
+            cont++;
+        }
+    }
+    printf("\nTotal average = %f",(double)total/cont);
+}
+
 
 void calculate_data_average(int group, int lenght, double arr[group][lenght]){
     double total = 0;
