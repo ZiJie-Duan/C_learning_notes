@@ -30,6 +30,8 @@ class CompileAssistant:
 
     def init_get_parameter(self):
         #初始化 获取参数
+        if len(sys.argv) == 1:
+            return "C:\\test.c" #默认路径
         return sys.argv[1]
     
     def init_set_default(self):
