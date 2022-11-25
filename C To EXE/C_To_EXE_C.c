@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define INFO_TYPE "INFO"
-#define cmd_command_lenght 10
-#define cmd_argument_lenght 10
-#define cmd_lenght 20
+#define cmd_command_lenght 50
+#define cmd_argument_lenght 950
+#define cmd_lenght 1000
 
 char code_path[500];
 char code_name[50];
@@ -16,6 +17,10 @@ void format_print(char *message, char *message_type, char *message_sourse);
 void print_hello(void);
 void print_help(void);
 char * input(char *in_message, int lenght);
+void split_two(char *str1, char *str2, int lenght1, int lenght2);
+void init_path(void);
+void update_path(char *path);
+void run(char *cmd);
 void cmd_match(char *cmd);
 
 int main(int argc , char* argv[]){
@@ -29,6 +34,8 @@ int main(int argc , char* argv[]){
         code_path_init = 0;
         format_print("code path missed\n","WARN",mes_sourse);
     } else {
+        strcpy(code_path,argv[1]);
+        init_path();
         format_print("code path inited\n",INFO_TYPE,mes_sourse);
     }
 
@@ -41,29 +48,106 @@ int main(int argc , char* argv[]){
 }
 
 void cmd_match(char *cmd){
+    char mes_sourse[] = "cmd_match";
+
+    char command[cmd_command_lenght];
+    strncpy(command,cmd,cmd_command_lenght-1);
+    char argument[cmd_argument_lenght];
+    split_two(command,argument,cmd_command_lenght,cmd_argument_lenght);
+
+    if (strcmp(command,"h")==0){
+        format_print("running Help\n",INFO_TYPE,mes_sourse);
+        print_help();
+
+    } else if ((strncmp(command+1,":\\",2)==0) || 
+                (strncmp(command+2,":\\",2)==0)) {
+        format_print("running Update Path\n",INFO_TYPE,mes_sourse);
+        update_path(cmd);
+
+    } else if (strcmp(command,"q")==0){
+        exit(0);
+
+    } else {
+        if (code_path_init){
+            run(exe_path);
+        } else {
+            format_print("Code path loss, please update path\n","ERR",mes_sourse);
+        }
+    }
+    //} else if (strcmp(command,"")==0){
+}
+
+void run(char *cmd){
+    char mes_sourse[] = "run";
+    char ncmd[cmd_lenght] = {};
+    system("cls");
+    format_print("running test exe program\n",INFO_TYPE,mes_sourse);
+    strcat(ncmd,"\"");
+    strcat(ncmd,cmd);
+    strcat(ncmd,"\"");
+
+    printf("\n\n------ RUNNING TESE ------\n");
+    printf("Code: %s\n",code_name);
+    printf("EXE: %s\n\n",exe_name);
+    printf("----- START -----\n");
+    //printf("cmd = %s\n",cmd);
+    //printf("ncmd = %s\n",ncmd);
+    system(ncmd);
+    printf("\n------ END ------\n\n");
+    format_print("exe file Stop\n",INFO_TYPE,mes_sourse);
+}
+
+void update_path(char *path){
+    strcpy(code_path,path);
+    init_path();
+    code_path_init = 1;
+}
+
+void init_path(void){
+    // this function is used to build exe name and path.
+    // you must update the "code_path" to make it work.
+
+    int i = 0;
+    while (code_path[++i]!='\0') continue;
+    
+    if ((code_path[0]=='\"')&&(code_path[i-1]=='\"')){
+        int cont;
+        for (cont=0; cont<i; cont++){
+            code_path[cont] = code_path[cont+1];
+        }
+        code_path[cont-1] = code_path[cont];
+    }
+
+    while (code_path[--i]!='\\') continue;
+    strcpy(code_name,code_path+i+1);
+
+    int name_location = i;
+    while (code_path[++i]!='.') continue;
+    code_path[i] = '\0';
+    strcpy(exe_name,code_path+name_location+1);
+    code_path[i] = '.';
+    strcat(exe_name,".exe");
+
+    code_path[name_location] = '\0';
+    strcpy(exe_path,code_path);
+    code_path[name_location] = '\\';
+    strcat(exe_path,"\\");
+    strcat(exe_path,exe_name);
+}
+
+void split_two(char *str1, char *str2, int lenght1, int lenght2){
     int i;
-    for (i=0; ;i++){
-        if (cmd[i] == '\0'){
+    for (i=0; i<(lenght1+lenght2); i++){
+        if (str1[i] == '\0'){
             i = -1;
             break;
         }
-        if (cmd[i] == ' '){
-            cmd[i] = '\0';
+        if (str1[i] == ' '){
+            str1[i] = '\0';
             break;
         }
     } 
-    char cmd_command[cmd_command_lenght];
-    char cmd_argument[cmd_argument_lenght];
-    strcpy(cmd_command,cmd);
-    cmd[i+cmd_argument_lenght] = '\0';
-    strcpy(cmd_argument,cmd+i+1);
-
-    if (strcmp(cmd_command,"h")==0){
-        print_help();
-    } else {
-        printf("\nok\n");
-    }
-    //} else if (strcmp(cmd_command,"")){
+    strcpy(str2,str1+i+1);
 }
 
 char * input(char *in_message, int lenght){
