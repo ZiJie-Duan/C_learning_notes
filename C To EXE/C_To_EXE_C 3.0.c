@@ -11,6 +11,7 @@ char code_path[500];
 char code_name[50];
 char exe_path[500];
 char exe_name[50];
+char home_path[500];
 int code_path_init = 1; // value 1 means that the variable is inited
 
 void format_print(char *message, char *message_type, char *message_sourse);
@@ -21,6 +22,8 @@ void split_two(char *str1, char *str2, int lenght1, int lenght2);
 void init_path(void);
 void update_path(char *path);
 void run(char *cmd);
+void compile(void);
+void open_dir(void);
 void cmd_match(char *cmd);
 
 int main(int argc , char* argv[]){
@@ -56,13 +59,32 @@ void cmd_match(char *cmd){
     split_two(command,argument,cmd_command_lenght,cmd_argument_lenght);
 
     if (strcmp(command,"h")==0){
-        format_print("running Help\n",INFO_TYPE,mes_sourse);
+        format_print("run \"print_help\" function\n",INFO_TYPE,mes_sourse);
         print_help();
 
+    } else if ((strcmp(command,"\\")==0) ||
+                (strcmp(command,"¡¢")==0))
+    {   
+        format_print("run \"compile\" function\n",INFO_TYPE,mes_sourse);
+        compile();
+
     } else if ((strncmp(command+1,":\\",2)==0) || 
-                (strncmp(command+2,":\\",2)==0)) {
-        format_print("running Update Path\n",INFO_TYPE,mes_sourse);
+                (strncmp(command+2,":\\",2)==0)) 
+    {
+        format_print("run \"update_path\" function\n",INFO_TYPE,mes_sourse);
         update_path(cmd);
+    
+    } else if (strcmp(command,"r")==0){
+        format_print("run \"remove\" function\n",INFO_TYPE,mes_sourse);
+        remove(exe_path);
+    
+    } else if (strcmp(command,"c")==0){
+        format_print("run \"cmd\" function\n",INFO_TYPE,mes_sourse);
+        system("start cmd");
+    
+    } else if (strcmp(command,"d")==0){
+        format_print("run \"open_dir\" function\n",INFO_TYPE,mes_sourse);
+        open_dir();
 
     } else if (strcmp(command,"q")==0){
         exit(0);
@@ -77,6 +99,27 @@ void cmd_match(char *cmd){
     //} else if (strcmp(command,"")==0){
 }
 
+void open_dir(void){
+    //explorer "{}"
+    char ncmd[cmd_lenght] = {};
+    strcat(strcat(strcat(ncmd,"explorer \""),home_path),"\"");
+    printf("%s",ncmd);
+    system(ncmd);
+}
+
+void compile(void){
+    //cmd = r"""gcc -o "{}" "{}" """.
+    char mes_sourse[] = "compile";
+    format_print("Start Compile\n",INFO_TYPE,mes_sourse);
+
+    char ncmd[cmd_lenght] = {};
+    strcat(strcat(strcat(strcat(strcat(
+        ncmd,"gcc -o \""),exe_path),"\" \""),code_path),"\"");
+    system(ncmd);
+
+    format_print("Compile Finish\n",INFO_TYPE,mes_sourse);
+}
+
 void run(char *cmd){
     char mes_sourse[] = "run";
     char ncmd[cmd_lenght] = {};
@@ -89,11 +132,11 @@ void run(char *cmd){
     printf("\n\n------ RUNNING TESE ------\n");
     printf("Code: %s\n",code_name);
     printf("EXE: %s\n\n",exe_name);
-    printf("----- START -----\n");
+    printf("----- START -----\n\n");
     //printf("cmd = %s\n",cmd);
     //printf("ncmd = %s\n",ncmd);
     system(ncmd);
-    printf("\n------ END ------\n\n");
+    printf("\n\n------ END ------\n\n");
     format_print("exe file Stop\n",INFO_TYPE,mes_sourse);
 }
 
@@ -119,7 +162,10 @@ void init_path(void){
     }
 
     while (code_path[--i]!='\\') continue;
+    code_path[i] = '\0';
+    strcpy(home_path,code_path);
     strcpy(code_name,code_path+i+1);
+    code_path[i] = '\\';
 
     int name_location = i;
     while (code_path[++i]!='.') continue;
@@ -165,19 +211,18 @@ char * input(char *in_message, int lenght){
 }
 
 void print_help(void){
-    printf("\n   C To EXE C V2.0 Help\n\n");
+    printf("\n   C To EXE C V3.0 Help\n\n");
     printf("   [None] ---- run exe file\n");
     printf("   [path] ---- change C code\n");
     printf("   \\ --------- compile C file to exe\n");
-    printf("   k --------- kill the exe program\n");
     printf("   r --------- remove the exe file\n");
     printf("   c --------- open cmd\n");
-    printf("   p --------- open code path\n");
+    printf("   d --------- open code path\n");
     printf("   q --------- quit\n\n");
 }
 
 void print_hello(void){
-    printf("\n      C To EXE C V2.0\n");
+    printf("\n      C To EXE C V3.0\n");
     printf("   Compilation Assistant\n\n");
 }
 
