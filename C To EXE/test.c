@@ -1,10 +1,8 @@
 #include <stdio.h>
+#include <dirent.h>
 
-int main(void){
-    
-    char tt[3] = "£¬";
-    printf("%s",tt);
-    printf("%d%d",tt[0],tt[1]);
+int main(int argc , char* argv[]){
 
+    printf("%s", argv[1]);
 
 }

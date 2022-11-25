@@ -21,7 +21,8 @@ char * input(char *in_message, int lenght);
 void split_two(char *str1, char *str2, int lenght1, int lenght2);
 void init_path(void);
 void update_path(char *path);
-void run(char *cmd);
+void remove_quotation(char *path);
+void run(char *exefile, char *argument);
 void compile(void);
 void open_dir(void);
 void cmd_match(char *cmd);
@@ -85,13 +86,16 @@ void cmd_match(char *cmd){
     } else if (strcmp(command,"d")==0){
         format_print("run \"open_dir\" function\n",INFO_TYPE,mes_sourse);
         open_dir();
+    
+    } else if (strcmp(command,"a")==0){
+        run(exe_path, argument);
 
     } else if (strcmp(command,"q")==0){
         exit(0);
 
     } else {
         if (code_path_init){
-            run(exe_path);
+            run(exe_path,NULL);
         } else {
             format_print("Code path loss, please update path\n","ERR",mes_sourse);
         }
@@ -120,14 +124,22 @@ void compile(void){
     format_print("Compile Finish\n",INFO_TYPE,mes_sourse);
 }
 
-void run(char *cmd){
+void run(char *exefile, char *argument){
     char mes_sourse[] = "run";
     char ncmd[cmd_lenght] = {};
     system("cls");
     format_print("running test exe program\n",INFO_TYPE,mes_sourse);
-    strcat(ncmd,"\"");
-    strcat(ncmd,cmd);
-    strcat(ncmd,"\"");
+
+    if (argument){
+        // Super Big BUG 
+        remove_quotation(argument);
+        strcat(strcat(strcat(ncmd,"\""),exefile),"\"");
+        strcat(strcat(strcat(ncmd," \""),argument),"\"");
+    } else {
+        strcat(ncmd,"\"");
+        strcat(ncmd,exefile);
+        strcat(ncmd,"\"");
+    }
 
     printf("\n\n------ RUNNING TESE ------\n");
     printf("Code: %s\n",code_name);
@@ -135,6 +147,7 @@ void run(char *cmd){
     printf("----- START -----\n\n");
     //printf("cmd = %s\n",cmd);
     //printf("ncmd = %s\n",ncmd);
+    printf("cmdn =%s\n",ncmd);
     system(ncmd);
     printf("\n\n------ END ------\n\n");
     format_print("exe file Stop\n",INFO_TYPE,mes_sourse);
@@ -149,18 +162,9 @@ void update_path(char *path){
 void init_path(void){
     // this function is used to build exe name and path.
     // you must update the "code_path" to make it work.
-
+    remove_quotation(code_path);
     int i = 0;
     while (code_path[++i]!='\0') continue;
-    
-    if ((code_path[0]=='\"')&&(code_path[i-1]=='\"')){
-        int cont;
-        for (cont=0; cont<i; cont++){
-            code_path[cont] = code_path[cont+1];
-        }
-        code_path[cont-1] = code_path[cont];
-    }
-
     while (code_path[--i]!='\\') continue;
     code_path[i] = '\0';
     strcpy(home_path,code_path);
@@ -181,8 +185,20 @@ void init_path(void){
     strcat(exe_path,exe_name);
 }
 
+void remove_quotation(char *path){
+    int i = 0;
+    while (code_path[++i]!='\0') continue;
+    if ((path[0]=='\"')&&(path[i-1]=='\"')){
+        int cont;
+        for (cont=0; cont<i; cont++){
+            path[cont] = path[cont+1];
+        }
+        path[cont-1] = path[cont];
+    }
+}
+
 void split_two(char *str1, char *str2, int lenght1, int lenght2){
-    int i;
+    int i=0;
     for (i=0; i<(lenght1+lenght2); i++){
         if (str1[i] == '\0'){
             i = -1;
@@ -215,6 +231,7 @@ void print_help(void){
     printf("   [None] ---- run exe file\n");
     printf("   [path] ---- change C code\n");
     printf("   \\ --------- compile C file to exe\n");
+    printf("   a --------- run exe file include arguments\n");
     printf("   r --------- remove the exe file\n");
     printf("   c --------- open cmd\n");
     printf("   d --------- open code path\n");
