@@ -5,4 +5,5 @@ int main(void){
     int *p = a;
     printf("%d",p[2]);
     getchar();
+
 }

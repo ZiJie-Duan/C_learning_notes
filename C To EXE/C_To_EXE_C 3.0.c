@@ -88,6 +88,7 @@ void cmd_match(char *cmd){
         open_dir();
     
     } else if (strcmp(command,"a")==0){
+        //have BUG
         run(exe_path, argument);
 
     } else if (strcmp(command,"q")==0){
@@ -231,7 +232,7 @@ void print_help(void){
     printf("   [None] ---- run exe file\n");
     printf("   [path] ---- change C code\n");
     printf("   \\ --------- compile C file to exe\n");
-    printf("   a --------- run exe file include arguments\n");
+    printf("   a(BUG) --------- run exe file include arguments\n");
     printf("   r --------- remove the exe file\n");
     printf("   c --------- open cmd\n");
     printf("   d --------- open code path\n");
