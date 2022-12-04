@@ -2,6 +2,7 @@
     "files.associations": {
         "stdio.h": "c",
         "windows.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "stdlib.h": "c"
     }
 }
