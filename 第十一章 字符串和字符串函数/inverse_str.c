@@ -9,20 +9,19 @@ int main(void){
     printf("%s\n",sentence);
     inverse(sentence);
     printf("%s\n",sentence);
-
-
 }
 
 void inverse(char * str){
     char * front = str;
     char * back = str;
-    char * temp;
+    char temp;
     while (*back !='\0') back++;
     back--;
-    while (((front-back) !=1)||((front-back) !=0)){
-        temp = back;
-        back = front;
-        front = temp;
+    while ((back-front) >1){
+        printf("1");
+        temp = *back;
+        *back = *front;
+        *front = temp;
         front++; back--;
     }
 }
@@ -30,8 +29,9 @@ void inverse(char * str){
 char * input(void){
     static char sentence[500];
     char *p = sentence;
-    while ((*(p++) =getchar()) !='\n'){
+    while ((*p =getchar()) !='\n'){
         p++;
     }
     p = '\0';
+    return sentence;
 }
