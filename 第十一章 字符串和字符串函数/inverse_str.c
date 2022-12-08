@@ -17,8 +17,7 @@ void inverse(char * str){
     char temp;
     while (*back !='\0') back++;
     back--;
-    while ((back-front) >1){
-        printf("1");
+    while ((back-front) >0){
         temp = *back;
         *back = *front;
         *front = temp;
@@ -32,6 +31,6 @@ char * input(void){
     while ((*p =getchar()) !='\n'){
         p++;
     }
-    p = '\0';
+    *p = '\0'; // *p not p, miss a '*' [bug]
     return sentence;
 }
