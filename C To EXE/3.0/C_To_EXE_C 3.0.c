@@ -64,7 +64,7 @@ void cmd_match(char *cmd){
         print_help();
 
     } else if ((strcmp(command,"\\")==0) ||
-                (strcmp(command,"¡¢")==0))
+                (strcmp(command,"ï¿½ï¿½")==0))
     {   
         format_print("run \"compile\" function\n",INFO_TYPE,mes_sourse);
         compile();
