@@ -3,6 +3,8 @@
         "stdio.h": "c",
         "windows.h": "c",
         "string.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "hash_dict.h": "c",
+        "type_traits": "c"
     }
 }
