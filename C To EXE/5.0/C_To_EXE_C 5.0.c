@@ -77,8 +77,10 @@ void cmd_match(char *cmd){
         update_path(cmd);
     
     } else if (strcmp(command,"r")==0){
-        format_print("run \"remove\" function\n",INFO_TYPE,mes_sourse);
-        remove(exe_path);
+        if (is_code_exist()){
+            format_print("run \"remove\" function\n",INFO_TYPE,mes_sourse);
+            remove(exe_path);   
+        }
     
     } else if (strcmp(command,"c")==0){
         format_print("run \"cmd\" function\n",INFO_TYPE,mes_sourse);
@@ -228,7 +230,6 @@ void compile(void){
     strcat(strcat(strcat(strcat(strcat(
         ncmd,"gcc -o \""),exe_path),"\" \""),code_path),"\"");
     system(ncmd);
-    printf("%s\n",ncmd);
 
     format_print("Compile Finish\n",INFO_TYPE,mes_sourse);
 }
