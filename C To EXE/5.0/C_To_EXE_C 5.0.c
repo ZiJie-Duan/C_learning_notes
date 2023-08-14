@@ -13,7 +13,6 @@ char exe_path[500];
 char exe_name[50];
 char home_path[500];
 int code_path_init = 1; // value 1 means that the variable is inited
-
 void format_print(char *message, char *message_type, char *message_sourse);
 void print_hello(void);
 void print_help(void);
@@ -144,7 +143,6 @@ void compile_all(void){
     strcat(strcat(strcat(strcat(strcat(
         ncmd,"gcc -o \""),exe_path),"\" \""),home_path),"\\*.c\"");
     
-    printf("%s\n",ncmd);
     system(ncmd);
 
     format_print("Compile Finish\n",INFO_TYPE,mes_sourse);
@@ -159,6 +157,7 @@ void run_out(char *exefile, char *argument){
 
     if (argument){
         remove_quotation(argument);
+        strcat(ncmd,"start cmd /c ");
         strcat(strcat(strcat(ncmd,"\"\""),exefile),"\"");
         strcat(strcat(strcat(ncmd," \""),argument),"\"\"");
     } else {
@@ -189,6 +188,7 @@ void safe_mode(char *exefile, char *argument){
     format_print("running test exe program safe mode\n",INFO_TYPE,mes_sourse);
 
     if (argument){
+        strcat(ncmd,"start cmd /c ");
         remove_quotation(argument);
         strcat(strcat(strcat(ncmd,"\"\""),exefile),"\"");
         strcat(strcat(strcat(ncmd," \""),argument),"\"\"");
@@ -263,6 +263,7 @@ void run(char *exefile, char *argument){
 
 void update_path(char *path){
     strcpy(code_path,path);
+    //printf("\n%s\n",code_path);
     init_path();
     code_path_init = 1;
 }
@@ -295,15 +296,17 @@ void init_path(void){
 
 void remove_quotation(char *path){
     int i = 0;
+    int cont;
     while (code_path[++i]!='\0') continue;
     if ((path[0]=='\"')&&(path[i-1]=='\"')){
-        int cont;
+
         for (cont=0; cont<i; cont++){
             path[cont] = path[cont+1];
         }
-        path[cont-1] = path[cont];
+        path[cont-2] = path[cont];
     }
 }
+
 
 void split_two(char *str1, char *str2, int lenght1, int lenght2){
     int i=0;
@@ -369,5 +372,4 @@ void format_print(char *message, char *message_type, char *message_sourse){
 }
 
 
-// 修复 拖入带有空格路径的BUG，修复传参启动多切分bug，\修复运行测试的时候打印丑陋的bug， 兼容 safemod 和 outrunmod 对于传参的兼容性
-// gcc "C:\Users\lucyc\Desktop\a\program.c" "C:\Users\lucyc\Desktop\a\*.c" -o "C:\Users\lucyc\Desktop\a\program.exe"
+// 现阶段只能传一个参数
